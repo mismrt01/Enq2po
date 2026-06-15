@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follow-Up Command Centre — Mangla EQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM — MANGLA WARM WHITE
+   ═══════════════════════════════════════ */
+:root {
+  --red:         #D42027;
+  --red-hover:   #B91C22;
+  --red-dim:     rgba(212,32,39,0.08);
+  --red-border:  rgba(212,32,39,0.20);
+  --green:       #1A7F4B;
+  --green-dim:   rgba(26,127,75,0.08);
+  --green-border:rgba(26,127,75,0.20);
+  --amber:       #B45309;
+  --amber-dim:   rgba(180,83,9,0.08);
+  --amber-border:rgba(180,83,9,0.20);
+  --blue:        #1D4ED8;
+  --blue-dim:    rgba(29,78,216,0.07);
+  --blue-border: rgba(29,78,216,0.18);
+
+  --black:    #111111;
+  --dark:     #1A1A1A;
+  --g800:     #2D2D2D;
+  --g700:     #444444;
+  --g600:     #666666;
+  --g500:     #888888;
+  --g400:     #AAAAAA;
+  --g300:     #C8C6C2;
+  --g200:     #E8E6E2;
+  --g150:     #EFEDE9;
+  --g100:     #F3F1EE;
+  --cream:    #FAF9F7;
+  --white:    #FFFFFF;
+
+  --font-d: 'Instrument Serif', Georgia, serif;
+  --font-b: 'Outfit', sans-serif;
+  --font-m: 'JetBrains Mono', monospace;
+
+  --radius: 3px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+
+  --left-w:  340px;
+  --hdr-h:   52px;
+  --score-h: 80px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--cream);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  font-size: 13px;
+}
+
+/* ═══════════════════════════════════════
+   LAYOUT SHELL
+   ═══════════════════════════════════════ */
+.app-shell {
+  display: grid;
+  grid-template-rows: var(--hdr-h) var(--score-h) 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── TOP HEADER BAR ─── */
+.app-header {
+  background: var(--dark);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  z-index: 100;
+}
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 14px; height: 14px; fill: white; }
+
+.logo-text {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  margin-left: 4px;
+}
+.breadcrumb span { color: rgba(255,255,255,0.55); }
+.breadcrumb-sep { font-size: 10px; }
+
+.header-spacer { flex: 1; }
+
+.header-env {
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 4px 10px;
+  border-radius: var(--radius);
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0;
+}
+.user-name {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+}
+
+/* ─── SCORE BAR ─── */
+.score-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--g200);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 2px;
+  z-index: 90;
+  box-shadow: var(--shadow-sm);
+}
+
+.score-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+  height: 52px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+.score-card:hover { background: var(--g100); }
+.score-card.active {
+  background: var(--g100);
+}
+.score-card.active::after {
+  content: '';
+  position: absolute;
+  bottom: -14px; left: 50%;
+  transform: translateX(-50%);
+  width: 40px; height: 2px;
+  background: var(--red);
+  border-radius: 1px;
+}
+
+.score-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--g200);
+  flex-shrink: 0;
+}
+
+.score-icon {
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.score-icon svg { width: 15px; height: 15px; }
+
+.score-icon.red   { background: var(--red-dim);   color: var(--red);   }
+.score-icon.amber { background: var(--amber-dim);  color: var(--amber); }
+.score-icon.green { background: var(--green-dim);  color: var(--green); }
+.score-icon.blue  { background: var(--blue-dim);   color: var(--blue);  }
+.score-icon.gray  { background: var(--g100);        color: var(--g600);  }
+
+.score-data { display: flex; flex-direction: column; gap: 1px; }
+.score-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g500);
+}
+.score-value {
+  font-family: var(--font-d);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--black);
+}
+.score-value.red   { color: var(--red);   }
+.score-value.amber { color: var(--amber); }
+.score-value.green { color: var(--green); }
+
+.score-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  padding-left: 16px;
+}
+
+.ontime-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.ontime-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g500);
+}
+.ontime-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ontime-bar-bg {
+  width: 80px; height: 5px;
+  background: var(--g150);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.ontime-bar-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  transition: width 0.8s ease;
+}
+.ontime-pct {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* ─── MAIN BODY (two panels) ─── */
+.main-body {
+  display: grid;
+  grid-template-columns: var(--left-w) 1fr;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════
+   LEFT PANEL — PRIORITY QUEUE
+   ═══════════════════════════════════════ */
+.left-panel {
+  background: var(--white);
+  border-right: 1px solid var(--g200);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.queue-toolbar {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--g150);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-box {
+  position: relative;
+}
+.search-box svg {
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  color: var(--g400);
+  pointer-events: none;
+}
+.search-box input {
+  width: 100%;
+  padding: 7px 10px 7px 32px;
+  background: var(--g100);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-b);
+  font-size: 12.5px;
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.search-box input:focus {
+  background: var(--white);
+  border-color: var(--g300);
+}
+.search-box input::placeholder { color: var(--g400); }
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-select {
+  flex: 1;
+  padding: 6px 8px;
+  background: var(--g100);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-b);
+  font-size: 12px;
+  color: var(--g700);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23888' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 26px;
+}
+
+.view-toggle {
+  display: flex;
+  background: var(--g100);
+  border-radius: var(--radius);
+  padding: 2px;
+  gap: 1px;
+}
+.view-btn {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: var(--font-m);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--g500);
+  transition: all 0.15s;
+}
+.view-btn.active {
+  background: var(--white);
+  color: var(--black);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── QUEUE GROUPS ─── */
+.queue-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.queue-scroll::-webkit-scrollbar { width: 4px; }
+.queue-scroll::-webkit-scrollbar-track { background: transparent; }
+.queue-scroll::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 99px; }
+
+.queue-group { }
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 6px;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 10;
+  border-bottom: 1px solid var(--g150);
+}
+
+.group-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.group-dot.red   { background: var(--red); }
+.group-dot.amber { background: var(--amber); }
+.group-dot.green { background: var(--green); }
+.group-dot.gray  { background: var(--g300); }
+
+.group-title {
+  font-family: var(--font-m);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.group-title.red   { color: var(--red); }
+.group-title.amber { color: var(--amber); }
+.group-title.green { color: var(--green); }
+.group-title.gray  { color: var(--g500); }
+
+.group-count {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  margin-left: auto;
+}
+.group-count.red   { background: var(--red-dim);   color: var(--red);   }
+.group-count.amber { background: var(--amber-dim);  color: var(--amber); }
+.group-count.green { background: var(--green-dim);  color: var(--green); }
+.group-count.gray  { background: var(--g100);       color: var(--g600);  }
+
+/* ─── QUEUE CARDS ─── */
+.queue-card {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--g150);
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+}
+.queue-card:hover { background: var(--g100); }
+.queue-card.selected {
+  background: var(--red-dim);
+  border-left: 3px solid var(--red);
+  padding-left: 11px;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.card-ref {
+  font-family: var(--font-m);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.5px;
+}
+
+.card-sla {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+}
+.card-sla.overdue { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-border);   }
+.card-sla.today   { background: var(--amber-dim);  color: var(--amber); border: 1px solid var(--amber-border); }
+.card-sla.upcoming{ background: var(--green-dim);  color: var(--green); border: 1px solid var(--green-border); }
+.card-sla.none    { background: var(--g100);        color: var(--g500);  border: 1px solid var(--g200);         }
+
+.card-customer {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.card-city {
+  font-size: 11px;
+  color: var(--g500);
+  display: flex; align-items: center; gap: 3px;
+}
+.card-city svg { width: 10px; height: 10px; }
+
+.card-value {
+  font-family: var(--font-m);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--g700);
+  margin-left: auto;
+}
+
+.card-bottom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-stage {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--g600);
+  background: var(--g100);
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid var(--g200);
+}
+
+.card-last-note {
+  font-size: 11px;
+  color: var(--g400);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.card-due-info {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--g500);
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.card-due-info.overdue { color: var(--red); }
+.card-due-info.today   { color: var(--amber); }
+
+/* Empty state */
+.queue-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--g400);
+}
+.queue-empty svg { width: 32px; height: 32px; margin: 0 auto 12px; display: block; opacity: 0.4; }
+.queue-empty p { font-size: 12px; }
+
+/* ═══════════════════════════════════════
+   RIGHT PANEL — DETAIL
+   ═══════════════════════════════════════ */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+/* ─── DETAIL HEADER ─── */
+.detail-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--g200);
+  padding: 16px 24px 0;
+  flex-shrink: 0;
+}
+
+.detail-toprow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.detail-ref-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.detail-ref {
+  font-family: var(--font-m);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  letter-spacing: 0.5px;
+}
+
+.detail-status-badge {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius);
+}
+.detail-status-badge.sent { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+.detail-status-badge.overdue { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+
+.detail-name-block { flex: 1; }
+
+.detail-customer-name {
+  font-family: var(--font-d);
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--black);
+  margin-bottom: 2px;
+}
+
+.detail-customer-sub {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--g500);
+}
+.detail-customer-sub span { display: flex; align-items: center; gap: 4px; }
+.detail-customer-sub svg { width: 12px; height: 12px; }
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* KPI Strip */
+.detail-kpi-strip {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--g150);
+  margin: 0 -24px;
+}
+
+.kpi-cell {
+  flex: 1;
+  padding: 10px 20px;
+  border-right: 1px solid var(--g150);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kpi-cell:last-child { border-right: none; }
+
+.kpi-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g400);
+}
+
+.kpi-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  white-space: nowrap;
+}
+.kpi-value.mono { font-family: var(--font-m); font-size: 13px; }
+.kpi-value.red { color: var(--red); }
+.kpi-value.amber { color: var(--amber); }
+.kpi-value.green { color: var(--green); }
+
+/* ─── CONTACTS ROW ─── */
+.contacts-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--g200);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--g100);
+  border: 1px solid var(--g200);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.contact-chip:hover {
+  background: var(--white);
+  border-color: var(--g300);
+  box-shadow: var(--shadow-sm);
+}
+.contact-chip-name { font-size: 12px; font-weight: 500; color: var(--black); }
+.contact-chip-role { font-size: 11px; color: var(--g500); }
+.contact-chip-actions { display: flex; gap: 4px; }
+.contact-action-btn {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.contact-action-btn.call { background: var(--green-dim); color: var(--green); }
+.contact-action-btn.mail { background: var(--blue-dim); color: var(--blue); }
+.contact-action-btn:hover { filter: brightness(0.88); }
+.contact-action-btn svg { width: 12px; height: 12px; }
+
+/* ─── BODY: TIMELINE + LOG FORM ─── */
+.detail-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  overflow: hidden;
+  gap: 0;
+}
+
+/* ─── TIMELINE ─── */
+.timeline-panel {
+  overflow-y: auto;
+  padding: 20px 24px;
+  border-right: 1px solid var(--g200);
+}
+.timeline-panel::-webkit-scrollbar { width: 4px; }
+.timeline-panel::-webkit-scrollbar-track { background: transparent; }
+.timeline-panel::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 99px; }
+
+.timeline-section-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--g400);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timeline-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--g200);
+}
+
+.timeline { position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px; top: 6px; bottom: 0;
+  width: 1px;
+  background: var(--g200);
+}
+
+.timeline-entry {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-icon {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  box-shadow: 0 0 0 1px var(--g200);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.timeline-icon svg { width: 13px; height: 13px; }
+.timeline-icon.call  { background: var(--blue-dim);  color: var(--blue);  }
+.timeline-icon.email { background: var(--green-dim); color: var(--green); }
+.timeline-icon.meet  { background: var(--amber-dim); color: var(--amber); }
+.timeline-icon.sys   { background: var(--g100);       color: var(--g500);  }
+.timeline-icon.late  { background: var(--red-dim);   color: var(--red);   }
+
+.timeline-content {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.timeline-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.timeline-channel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.timeline-late-badge {
+  font-family: var(--font-m);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+}
+
+.timeline-time {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--g400);
+  margin-left: auto;
+}
+
+.timeline-note {
+  font-size: 12.5px;
+  color: var(--g700);
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+
+.timeline-next {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 500;
+}
+.timeline-next svg { width: 11px; height: 11px; }
+.timeline-next.late { color: var(--red); }
+
+.timeline-who {
+  font-size: 11px;
+  color: var(--g400);
+  margin-top: 3px;
+}
+
+.timeline-date-sep {
+  text-align: center;
+  margin: 16px 0 12px;
+}
+.timeline-date-sep span {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g400);
+  background: var(--cream);
+  padding: 3px 10px;
+  border: 1px solid var(--g200);
+  border-radius: 99px;
+}
+
+.timeline-empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--g400);
+}
+.timeline-empty svg { width: 28px; height: 28px; margin: 0 auto 8px; display: block; opacity: 0.35; }
+.timeline-empty p { font-size: 12px; }
+
+/* ─── LOG ACTIVITY FORM ─── */
+.log-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--white);
+  border-left: 1px solid var(--g200);
+}
+
+.log-panel-header {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--g150);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.log-panel-title {
+  font-family: var(--font-m);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--g600);
+}
+
+.log-panel-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  flex: 1;
+}
+.log-panel-body::-webkit-scrollbar { width: 4px; }
+.log-panel-body::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 99px; }
+
+/* Form field groups */
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+
+.field-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g500);
+}
+
+.field-row { display: flex; gap: 8px; }
+
+.form-select, .form-input, .form-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--g200);
+  border-radius: var(--radius);
+  background: var(--cream);
+  font-family: var(--font-b);
+  font-size: 12.5px;
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  appearance: none;
+}
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23888' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-color: var(--cream);
+  padding-right: 28px;
+  cursor: pointer;
+}
+.form-select:focus, .form-input:focus, .form-textarea:focus {
+  border-color: var(--red);
+  background: var(--white);
+  box-shadow: 0 0 0 3px var(--red-dim);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 88px;
+  line-height: 1.5;
+}
+
+.field-hint {
+  font-size: 10.5px;
+  color: var(--g400);
+  margin-top: 2px;
+}
+
+.next-block {
+  background: var(--g100);
+  border: 1px solid var(--g200);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.next-block-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g500);
+  margin-bottom: 2px;
+}
+
+.log-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--g150);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.outcome-row {
+  display: flex;
+  gap: 6px;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-b);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+  letter-spacing: 0.1px;
+}
+.btn svg { width: 14px; height: 14px; }
+
+.btn-primary {
+  background: var(--red);
+  color: white;
+  box-shadow: 0 1px 4px rgba(212,32,39,0.25);
+}
+.btn-primary:hover {
+  background: var(--red-hover);
+  box-shadow: 0 3px 10px rgba(212,32,39,0.35);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--g700);
+  border: 1px solid var(--g200);
+}
+.btn-ghost:hover { background: var(--g100); border-color: var(--g300); }
+
+.btn-green {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+.btn-green:hover { background: var(--green); color: white; }
+
+.btn-red-ghost {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+}
+.btn-red-ghost:hover { background: var(--red); color: white; }
+
+.btn-sm { padding: 5px 10px; font-size: 11.5px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; }
+
+.btn-full { width: 100%; }
+
+/* ─── NO SELECTION PLACEHOLDER ─── */
+.no-selection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--g400);
+  padding: 40px;
+}
+.no-selection-icon {
+  width: 64px; height: 64px;
+  background: var(--g100);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.no-selection-icon svg { width: 28px; height: 28px; opacity: 0.4; }
+.no-selection h3 { font-family: var(--font-d); font-size: 20px; color: var(--g600); font-weight: 400; }
+.no-selection p { font-size: 13px; text-align: center; max-width: 240px; line-height: 1.6; }
+
+/* ─── WIN/LOST MODAL ─── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--white);
+  border-radius: 6px;
+  width: 420px;
+  box-shadow: var(--shadow-lg);
+  transform: scale(0.95) translateY(8px);
+  transition: transform 0.2s;
+}
+.modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--g150);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modal-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-icon.won  { background: var(--green-dim); color: var(--green); }
+.modal-icon.lost { background: var(--red-dim);   color: var(--red);   }
+.modal-icon svg { width: 18px; height: 18px; }
+.modal-title { font-family: var(--font-d); font-size: 20px; }
+.modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--g150); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ─── TOAST ─── */
+.toast-container {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--dark);
+  color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  min-width: 260px;
+  animation: toastIn 0.25s ease;
+  border-left: 3px solid var(--green);
+}
+.toast.error { border-left-color: var(--red); }
+.toast svg { width: 16px; height: 16px; opacity: 0.8; flex-shrink: 0; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── PDF DOCS ROW ─── */
+.docs-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--g100);
+  border-top: 1px solid var(--g200);
+  flex-shrink: 0;
+}
+.docs-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--g400);
+  margin-right: 4px;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.detail-panel-animate { animation: slideIn 0.2s ease; }
+
+/* ─── SCROLLBAR (global) ─── */
+* { scrollbar-width: thin; scrollbar-color: var(--g200) transparent; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     HTML STRUCTURE
+═══════════════════════════════════════════════════ -->
+<div class="app-shell" id="app">
+
+  <!-- ─── TOP HEADER ─── -->
+  <header class="app-header">
+    <div class="app-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      <span class="logo-text">MANGLA EQ</span>
+    </div>
+    <div class="breadcrumb">
+      <span class="breadcrumb-sep">›</span>
+      <span>Follow-Up Command Centre</span>
+    </div>
+    <div class="header-spacer"></div>
+    <span class="header-env">Production</span>
+    <div class="header-user">
+      <div class="user-avatar" id="userInitials">DK</div>
+      <span class="user-name" id="userName">Disha Khurana</span>
+    </div>
+  </header>
+
+  <!-- ─── SCORE BAR ─── -->
+  <div class="score-bar" id="scoreBar">
+    <div class="score-card" id="sc-overdue" onclick="setFilter('overdue')">
+      <div class="score-icon red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="score-data">
+        <span class="score-label">Overdue</span>
+        <span class="score-value red" id="sc-overdue-val">—</span>
+      </div>
+    </div>
+
+    <div class="score-divider"></div>
+
+    <div class="score-card" id="sc-today" onclick="setFilter('today')">
+      <div class="score-icon amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="score-data">
+        <span class="score-label">Due Today</span>
+        <span class="score-value amber" id="sc-today-val">—</span>
+      </div>
+    </div>
+
+    <div class="score-divider"></div>
+
+    <div class="score-card" id="sc-upcoming" onclick="setFilter('upcoming')">
+      <div class="score-icon green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="score-data">
+        <span class="score-label">Upcoming</span>
+        <span class="score-value green" id="sc-upcoming-val">—</span>
+      </div>
+    </div>
+
+    <div class="score-divider"></div>
+
+    <div class="score-card" id="sc-nostep" onclick="setFilter('nostep')">
+      <div class="score-icon gray">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="score-data">
+        <span class="score-label">No Next Step</span>
+        <span class="score-value" id="sc-nostep-val">—</span>
+      </div>
+    </div>
+
+    <div class="score-divider"></div>
+
+    <div class="score-card" id="sc-all" onclick="setFilter('all')">
+      <div class="score-icon blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      </div>
+      <div class="score-data">
+        <span class="score-label">Total Active</span>
+        <span class="score-value" id="sc-all-val">—</span>
+      </div>
+    </div>
+
+    <div class="score-bar-right">
+      <div class="ontime-block">
+        <span class="ontime-label">On-Time Rate · June</span>
+        <div class="ontime-bar-wrap">
+          <div class="ontime-bar-bg">
+            <div class="ontime-bar-fill" id="ontimeFill" style="width:0%"></div>
+          </div>
+          <span class="ontime-pct" id="ontimePct">—%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MAIN BODY ─── -->
+  <div class="main-body">
+
+    <!-- ══ LEFT PANEL ══ -->
+    <div class="left-panel">
+      <div class="queue-toolbar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search quotes, customers…" oninput="renderQueue()">
+        </div>
+        <div class="toolbar-row">
+          <select class="filter-select" id="ownerFilter" onchange="renderQueue()">
+            <option value="">All Owners</option>
+            <option>Disha Khurana</option>
+            <option>Akash Gupta</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active" id="vb-queue" onclick="switchView('queue',this)">Queue</button>
+            <button class="view-btn" id="vb-board" onclick="switchView('board',this)">Board</button>
+          </div>
+        </div>
+      </div>
+      <div class="queue-scroll" id="queueContainer"></div>
+    </div>
+
+    <!-- ══ RIGHT PANEL ══ -->
+    <div class="right-panel" id="rightPanel">
+      <!-- No selection placeholder -->
+      <div class="no-selection" id="noSelection">
+        <div class="no-selection-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <h3>Select a Quote</h3>
+        <p>Click any item in the queue to open the activity detail and log a follow-up.</p>
+      </div>
+
+      <!-- Detail view (hidden until selection) -->
+      <div id="detailView" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+
+        <!-- Header -->
+        <div class="detail-header" id="detailHeader">
+          <div class="detail-toprow">
+            <div class="detail-ref-block">
+              <span class="detail-ref" id="dRef">—</span>
+              <span class="detail-status-badge sent" id="dStatusBadge">SENT</span>
+              <span class="detail-status-badge overdue" id="dSLABadge" style="display:none">OVERDUE</span>
+            </div>
+            <div class="detail-name-block">
+              <div class="detail-customer-name" id="dCustomer">—</div>
+              <div class="detail-customer-sub">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span id="dCity">—</span>
+                </span>
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                  <span id="dSector">—</span>
+                </span>
+              </div>
+            </div>
+            <div class="detail-actions">
+              <button class="btn btn-green btn-sm" onclick="openModal('won')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                WON
+              </button>
+              <button class="btn btn-red-ghost btn-sm" onclick="openModal('lost')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                LOST
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="closeQuote()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                CLOSE
+              </button>
+            </div>
+          </div>
+          <!-- KPI Strip -->
+          <div class="detail-kpi-strip">
+            <div class="kpi-cell">
+              <span class="kpi-label">Quote Value</span>
+              <span class="kpi-value mono" id="dValue">—</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Valid Till</span>
+              <span class="kpi-value" id="dValidity">—</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Next Step</span>
+              <span class="kpi-value" id="dNextStep">—</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Owner</span>
+              <span class="kpi-value" id="dOwner">—</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">Follow-Ups</span>
+              <span class="kpi-value" id="dFollowCount">—</span>
+            </div>
+            <div class="kpi-cell">
+              <span class="kpi-label">On-Time %</span>
+              <span class="kpi-value" id="dOnTime">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contacts Bar -->
+        <div class="contacts-bar" id="contactsBar"></div>
+
+        <!-- Body: Timeline + Log Form -->
+        <div class="detail-body">
+
+          <!-- Timeline -->
+          <div class="timeline-panel" id="timelinePanel">
+            <div class="timeline-section-label">Activity History</div>
+            <div class="timeline" id="timelineEntries"></div>
+          </div>
+
+          <!-- Log Activity -->
+          <div class="log-panel">
+            <div class="log-panel-header">
+              <span class="log-panel-title">Log Activity</span>
+              <span style="font-size:11px;color:var(--g400)" id="logCount"></span>
+            </div>
+            <div class="log-panel-body">
+
+              <!-- Activity Done -->
+              <div class="field-group">
+                <span class="field-label">Activity Done</span>
+                <div class="field-row">
+                  <select class="form-select" id="fChannel" style="flex:1" onchange="updateChannelHint()">
+                    <option>Called</option>
+                    <option>WhatsApp</option>
+                    <option>Email</option>
+                    <option>Site Visit</option>
+                    <option>No Answer</option>
+                    <option>Meeting</option>
+                  </select>
+                  <select class="form-select" id="fWho" style="flex:1">
+                    <option>Disha Khurana</option>
+                    <option>Akash Gupta</option>
+                    <option>Akki</option>
+                  </select>
+                </div>
+                <span class="field-hint" id="channelHint">What was discussed on the call?</span>
+              </div>
+
+              <!-- Notes -->
+              <div class="field-group">
+                <span class="field-label">What Happened?</span>
+                <textarea class="form-textarea" id="fNote" placeholder="What did the customer say? Any commitments made?"></textarea>
+              </div>
+
+              <!-- Next Follow-Up -->
+              <div class="next-block">
+                <span class="next-block-label">Next Follow-Up Planned</span>
+                <div class="field-row">
+                  <select class="form-select" id="fNextChannel" style="flex:1">
+                    <option>Called</option>
+                    <option>WhatsApp</option>
+                    <option>Email</option>
+                    <option>Meeting</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <input type="date" class="form-input" id="fNextDate" style="flex:1">
+                  <input type="time" class="form-input" id="fNextTime" style="width:110px;flex-shrink:0">
+                </div>
+                <span class="field-hint" id="nextHint">Leave blank if customer did not commit to a next contact.</span>
+              </div>
+
+            </div><!-- /log-panel-body -->
+
+            <div class="log-footer">
+              <div class="outcome-row">
+                <button class="btn btn-ghost btn-sm" onclick="openModal('won')" style="flex:1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--green)"><polyline points="20 6 9 17 4 12"/></svg>
+                  Mark Won
+                </button>
+                <button class="btn btn-ghost btn-sm" onclick="openModal('lost')" style="flex:1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--red)"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  Mark Lost
+                </button>
+              </div>
+
+              <div class="field-row">
+                <button class="btn btn-ghost btn-sm" onclick="generatePDF('quote')" style="flex:1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Quote PDF
+                </button>
+                <button class="btn btn-ghost btn-sm" onclick="generatePDF('pi')" style="flex:1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  PI PDF
+                </button>
+              </div>
+
+              <button class="btn btn-primary btn-full" onclick="logActivity()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                LOG ACTIVITY
+              </button>
+            </div>
+          </div><!-- /log-panel -->
+
+        </div><!-- /detail-body -->
+      </div><!-- /detailView -->
+    </div><!-- /right-panel -->
+
+  </div><!-- /main-body -->
+</div><!-- /app-shell -->
+
+<!-- ══ WIN/LOST MODAL ══ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <div class="modal-title" id="modalTitle">Mark as Won</div>
+        <div style="font-size:12px;color:var(--g500)" id="modalSubtitle">This will close the follow-up and update the pipeline.</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <span class="field-label">Reason / Notes</span>
+        <textarea class="form-textarea" id="modalNote" placeholder="Optional — what led to this outcome?" style="min-height:72px"></textarea>
+      </div>
+      <div class="field-group" id="wonPoField">
+        <span class="field-label">Customer PO Number</span>
+        <input type="text" class="form-input" id="modalPoNo" placeholder="e.g. CUST-PO-2026-0123">
+        <span class="field-hint">Required when marking Won — this triggers order creation.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="modalConfirmBtn" onclick="confirmOutcome()">Confirm Won</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST CONTAINER ══ -->
+<div class="toast-container" id="toastContainer"></div>
+
+
+<script>
+/* ═══════════════════════════════════════════════════
+   MOCK DATA — Realistic Mangla Rubber scenario
+   (Replace with Supabase fetch in production)
+═══════════════════════════════════════════════════ */
+const TODAY = new Date();
+const T = d => {
+  const dt = new Date(TODAY);
+  dt.setDate(dt.getDate() + d);
+  return dt.toISOString().slice(0,10);
+};
+const TH = (d, h) => {
+  const dt = new Date(TODAY);
+  dt.setDate(dt.getDate() + d);
+  dt.setHours(h, 30, 0, 0);
+  return dt.toISOString();
+};
+
+const USERS = { 'Disha Khurana':'DK', 'Akash Gupta':'AG', 'Akki':'AK' };
+
+const MOCK_QUOTES = [
+  {
+    id:'MRT-2026-023', enqRef:'ENQ-2026-041', cust:'Varalka Engineers Pvt. Ltd.',
+    city:'Noida', sector:'Chemical', value:87000, currency:'INR',
+    validity: T(10), status:'Sent', owner:'Disha Khurana',
+    contacts:[
+      { name:'Rajiv Sharma', role:'Purchase Manager', phone:'+91 98107 22340', email:'r.sharma@varalka.com' },
+      { name:'Priya Singh',  role:'Technical Head',   phone:'+91 98107 55128', email:'p.singh@varalka.com' }
+    ],
+    followup:{ nextDate: T(-4), nextChannel:'Called', isCompleted:false },
+    logs:[
+      { ts: TH(-12,14), channel:'Called', who:'Disha Khurana', note:'Spoke to Rajiv. He confirmed the requirement is for 2" butterfly valve liners — EPDM grade. Asked us to confirm WRAS approval status. Said committee meets next Monday.', nextDate: T(-4), nextChannel:'Called', wasOnTime:true },
+      { ts: TH(-18,10), channel:'WhatsApp', who:'Disha Khurana', note:'Sent quote PDF on WhatsApp. Rajiv acknowledged receipt. Said will review and revert.', nextDate: T(-12), nextChannel:'Called', wasOnTime:true },
+      { ts: TH(-21, 9), channel:'Called', who:'Akash Gupta', note:'First follow-up call after quote sent. No answer on direct line. Left a voicemail.', nextDate: T(-18), nextChannel:'Called', wasOnTime:false }
+    ]
+  },
+  {
+    id:'MRT-2026-016', enqRef:'ENQ-2026-031', cust:'Mawana Sugar Works',
+    city:'Mawana', sector:'Sugar', value:23370, currency:'INR',
+    validity: T(5), status:'Sent', owner:'Disha Khurana',
+    contacts:[
+      { name:'Hari Om Gupta', role:'Maintenance Head', phone:'+91 94120 88230', email:'maintenance@mawanasugar.com' }
+    ],
+    followup:{ nextDate: T(-7), nextChannel:'Called', isCompleted:false },
+    logs:[
+      { ts: TH(-8,16), channel:'Called', who:'Disha Khurana', note:'I have checked the quotation ma\'am. Hari Om said the prices are acceptable but needs MD approval. MD is in Delhi this week. Will confirm by end of month.', nextDate: T(-7), nextChannel:'Called', wasOnTime:false },
+      { ts: TH(-15,11), channel:'Called', who:'Disha Khurana', note:'Called Hari Om. He confirmed rates look good but PO needs approval from Lucknow HQ. Approval timeline is 2-3 weeks.', nextDate: T(-8), nextChannel:'Called', wasOnTime:true }
+    ]
+  },
+  {
+    id:'MRT-2026-007', enqRef:'ENQ-2026-012', cust:'Mount Meru India Pvt. Ltd.',
+    city:'Mumbai', sector:'Pharma', value:8800, currency:'INR',
+    validity: T(-3), status:'Sent', owner:'Akash Gupta',
+    contacts:[
+      { name:'Deepak Nair', role:'Procurement',       phone:'+91 98209 11230', email:'d.nair@mountmeru.in' }
+    ],
+    followup:{ nextDate: T(-10), nextChannel:'Email', isCompleted:false },
+    logs:[
+      { ts: TH(-11,15), channel:'Email', who:'Akash Gupta', note:'Sent reminder email. No response yet. Quote validity has expired. Need to check if we can extend or re-quote.', nextDate: T(-10), nextChannel:'Email', wasOnTime:false }
+    ]
+  },
+  {
+    id:'MRT-2026-031', enqRef:'ENQ-2026-056', cust:'HPCL — Vizag Refinery',
+    city:'Visakhapatnam', sector:'Power', value:245000, currency:'INR',
+    validity: T(21), status:'Sent', owner:'Akki',
+    contacts:[
+      { name:'V. Subramaniam', role:'Materials Manager',  phone:'+91 91000 34512', email:'v.sub@hpcl.co.in' },
+      { name:'K. Reddy',       role:'Inspection Officer', phone:'+91 91000 34599', email:'k.reddy@hpcl.co.in' }
+    ],
+    followup:{ nextDate: T(0), nextChannel:'Called', isCompleted:false },
+    logs:[
+      { ts: TH(-2,10), channel:'Called', who:'Akki', note:'Spoke to Subramaniam. He is pushing for DGQA-certified supply. Confirmed our HNBR dome seals meet spec sheet XR-409. Said will revert after internal approval. Expect call back today.', nextDate: T(0), nextChannel:'Called', wasOnTime:true }
+    ]
+  },
+  {
+    id:'MRT-2026-028', enqRef:'ENQ-2026-049', cust:'Thermax Ltd.',
+    city:'Pune', sector:'Power', value:62500, currency:'INR',
+    validity: T(14), status:'Sent', owner:'Disha Khurana',
+    contacts:[
+      { name:'Anil Kulkarni', role:'Purchase',    phone:'+91 98221 44310', email:'a.kulkarni@thermax.com' }
+    ],
+    followup:{ nextDate: T(2), nextChannel:'Called', isCompleted:false },
+    logs:[
+      { ts: TH(-5,14), channel:'Called', who:'Disha Khurana', note:'Anil confirmed specs are fine. Waiting for budget approval for Q3. Said to call back after 5th of the month.', nextDate: T(2), nextChannel:'Called', wasOnTime:true },
+      { ts: TH(-10,11), channel:'WhatsApp', who:'Disha Khurana', note:'Sent product spec sheet for PHE gaskets (Alfa Laval M15 series). Anil confirmed receipt.', nextDate: T(-5), nextChannel:'Called', wasOnTime:true }
+    ]
+  },
+  {
+    id:'MRT-2026-019', enqRef:'ENQ-2026-038', cust:'Hindalco Industries Ltd.',
+    city:'Renukoot', sector:'Aluminium', value:118000, currency:'INR',
+    validity: T(7), status:'Sent', owner:'Akash Gupta',
+    contacts:[
+      { name:'Santosh Misra', role:'Maintenance Mgr', phone:'+91 94521 67800', email:'s.misra@hindalco.com' }
+    ],
+    followup:{ nextDate: T(1), nextChannel:'Called', isCompleted:false },
+    logs:[
+      { ts: TH(-3, 9), channel:'Called', who:'Akash Gupta', note:'Santosh discussed FFKM O-ring compatibility with AS-241 lye. Wants a test sample batch of 10 before bulk order. Confirmed address for sample dispatch.', nextDate: T(1), nextChannel:'Called', wasOnTime:true }
+    ]
+  },
+  {
+    id:'MRT-2026-034', enqRef:'ENQ-2026-062', cust:'Indian Farmers Fertiliser Co-op',
+    city:'New Delhi', sector:'Chemical', value:34200, currency:'INR',
+    validity: T(18), status:'Sent', owner:'Disha Khurana',
+    contacts:[
+      { name:'Rekha Pandey', role:'Purchase Officer', phone:'+91 98118 92012', email:'r.pandey@iffco.in' }
+    ],
+    followup:{ nextDate: null, nextChannel:'Called', isCompleted:false },
+    logs:[]
+  },
+  {
+    id:'MRT-2026-038', enqRef:'ENQ-2026-071', cust:'Balrampur Chini Mills Ltd.',
+    city:'Balrampur', sector:'Sugar', value:15600, currency:'INR',
+    validity: T(25), status:'Sent', owner:'Akash Gupta',
+    contacts:[
+      { name:'Ram Swaroop', role:'Technical Manager', phone:'+91 94121 55401', email:'ramswaroop@balrampurchini.com' }
+    ],
+    followup:{ nextDate: null, nextChannel:'WhatsApp', isCompleted:false },
+    logs:[]
+  },
+  {
+    id:'MRT-2026-041', enqRef:'ENQ-2026-078', cust:'NTPC Ltd. — Rihand Stage 3',
+    city:'Sonebhadra', sector:'Power', value:389000, currency:'INR',
+    validity: T(30), status:'Sent', owner:'Akki',
+    contacts:[
+      { name:'P.K. Srivastava', role:'Chief Purchase Manager', phone:'+91 94158 88801', email:'pksrivastava@ntpc.co.in' }
+    ],
+    followup:{ nextDate: T(4), nextChannel:'Meeting', isCompleted:false },
+    logs:[
+      { ts: TH(-1,15), channel:'Meeting', who:'Akki', note:'Site meeting at Rihand. Explained full PHE gasket program — GEA Ecoflex and Tranter GC-series interchangeability. PK Srivastava confirmed interest in annual rate contract. Will send MOU draft for internal review.', nextDate: T(4), nextChannel:'Called', wasOnTime:true }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+let currentFilter = 'all';
+let selectedId    = null;
+let modalMode     = null;
+let currentUser   = 'Disha Khurana';
+
+// Scoring
+function classifyQuote(q) {
+  const next = q.followup.nextDate;
+  if (!next) return 'nostep';
+  const today = T(0);
+  if (next < today) return 'overdue';
+  if (next === today) return 'today';
+  return 'upcoming';
+}
+
+function slaLabel(cls) {
+  return { overdue:'OVERDUE', today:'TODAY', upcoming:'UPCOMING', nostep:'NO STEP' }[cls] || cls;
+}
+
+function daysOverdue(nextDate) {
+  if (!nextDate) return 0;
+  const diff = (new Date(T(0)) - new Date(nextDate)) / 86400000;
+  return Math.round(diff);
+}
+
+function formatSLAAge(nextDate) {
+  const days = daysOverdue(nextDate);
+  if (days <= 0) return null;
+  if (days === 1) return '1d overdue';
+  if (days < 7)  return `${days}d overdue`;
+  if (days < 30) return `${Math.floor(days/7)}w overdue`;
+  return `${Math.floor(days/30)}mo overdue`;
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function formatDateTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short' }) + ' · ' +
+         d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+}
+
+function formatINR(n) {
+  if (!n && n !== 0) return '—';
+  return '₹' + Number(n).toLocaleString('en-IN');
+}
+
+/* ═══════════════════════════════════════════════════
+   SCORE BAR
+═══════════════════════════════════════════════════ */
+function updateScoreBar() {
+  const groups = { overdue:0, today:0, upcoming:0, nostep:0, all:0 };
+  MOCK_QUOTES.forEach(q => {
+    if (q.followup.isCompleted) return;
+    const cls = classifyQuote(q);
+    groups[cls]++;
+    groups.all++;
+  });
+
+  document.getElementById('sc-overdue-val').textContent = groups.overdue;
+  document.getElementById('sc-today-val').textContent   = groups.today;
+  document.getElementById('sc-upcoming-val').textContent= groups.upcoming;
+  document.getElementById('sc-nostep-val').textContent  = groups.nostep;
+  document.getElementById('sc-all-val').textContent     = groups.all;
+
+  // On-time rate
+  const allLogs = MOCK_QUOTES.flatMap(q => q.logs);
+  const logsWithFlag = allLogs.filter(l => l.wasOnTime !== undefined);
+  const onTime = logsWithFlag.filter(l => l.wasOnTime).length;
+  const pct = logsWithFlag.length ? Math.round(onTime / logsWithFlag.length * 100) : 0;
+  document.getElementById('ontimeFill').style.width = pct + '%';
+  document.getElementById('ontimeFill').style.background = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('ontimePct').style.color = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('ontimePct').textContent  = pct + '%';
+
+  // Active filter highlight
+  ['overdue','today','upcoming','nostep','all'].forEach(f => {
+    document.getElementById('sc-' + f).classList.toggle('active', currentFilter === f);
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   QUEUE RENDER
+═══════════════════════════════════════════════════ */
+function setFilter(f) {
+  currentFilter = f;
+  updateScoreBar();
+  renderQueue();
+}
+
+function renderQueue() {
+  const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  const owner  = document.getElementById('ownerFilter')?.value || '';
+
+  let quotes = MOCK_QUOTES.filter(q => {
+    if (q.followup.isCompleted) return false;
+    if (owner && q.owner !== owner) return false;
+    if (search && !q.cust.toLowerCase().includes(search) && !q.id.toLowerCase().includes(search)) return false;
+    const cls = classifyQuote(q);
+    if (currentFilter === 'all') return true;
+    return cls === currentFilter;
+  });
+
+  // Sort: overdue first by most overdue, then today, upcoming, nostep
+  const order = { overdue:0, today:1, upcoming:2, nostep:3 };
+  quotes.sort((a,b) => {
+    const ca = classifyQuote(a), cb = classifyQuote(b);
+    if (ca !== cb) return (order[ca]||99) - (order[cb]||99);
+    // within overdue: most overdue first
+    if (ca === 'overdue') return new Date(a.followup.nextDate) - new Date(b.followup.nextDate);
+    // within today/upcoming: soonest first
+    if (ca === 'today' || ca === 'upcoming') return new Date(a.followup.nextDate) - new Date(b.followup.nextDate);
+    return 0;
+  });
+
+  const container = document.getElementById('queueContainer');
+  if (!quotes.length) {
+    container.innerHTML = `<div class="queue-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      <p>No quotes match this filter.</p>
+    </div>`;
+    return;
+  }
+
+  // Group
+  const grouped = { overdue:[], today:[], upcoming:[], nostep:[] };
+  quotes.forEach(q => grouped[classifyQuote(q)].push(q));
+
+  const groupConfig = [
+    { key:'overdue',  label:'Overdue',     cls:'red'   },
+    { key:'today',    label:'Due Today',   cls:'amber' },
+    { key:'upcoming', label:'Upcoming',    cls:'green' },
+    { key:'nostep',   label:'No Next Step',cls:'gray'  }
+  ];
+
+  let html = '';
+  groupConfig.forEach(({ key, label, cls }) => {
+    const items = grouped[key];
+    if (!items.length) return;
+    html += `<div class="queue-group">
+      <div class="group-header">
+        <div class="group-dot ${cls}"></div>
+        <span class="group-title ${cls}">${label}</span>
+        <span class="group-count ${cls}">${items.length}</span>
+      </div>`;
+    items.forEach(q => {
+      const isSelected = q.id === selectedId;
+      const lastLog = q.logs[0] || null;
+      const slaAge = formatSLAAge(q.followup.nextDate);
+      html += `<div class="queue-card ${isSelected ? 'selected' : ''}" onclick="selectQuote('${q.id}')">
+        <div class="card-top">
+          <span class="card-ref">${q.id}</span>
+          <span class="card-sla ${key}">${slaLabel(key)}</span>
+        </div>
+        <div class="card-customer">${escHtml(q.cust)}</div>
+        <div class="card-meta">
+          <span class="card-city">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${q.city}
+          </span>
+          <span class="card-value">${formatINR(q.value)}</span>
+        </div>
+        <div class="card-bottom">
+          <span class="card-stage">${q.logs.length > 0 ? q.logs.length + ' follow-up' + (q.logs.length>1?'s':'') : 'Not started'}</span>
+          <span class="card-last-note">${lastLog ? escHtml(lastLog.note.slice(0,42)) + '…' : 'No activity yet'}</span>
+          ${slaAge ? `<span class="card-due-info ${key}">${slaAge}</span>` : (q.followup.nextDate ? `<span class="card-due-info">${formatDate(q.followup.nextDate)}</span>` : '')}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════
+   DETAIL PANEL
+═══════════════════════════════════════════════════ */
+function selectQuote(id) {
+  selectedId = id;
+  renderQueue(); // re-render to update selection highlight
+  renderDetail();
+}
+
+function renderDetail() {
+  const q = MOCK_QUOTES.find(x => x.id === selectedId);
+  if (!q) return;
+
+  const noSel = document.getElementById('noSelection');
+  const det   = document.getElementById('detailView');
+  noSel.style.display = 'none';
+  det.style.display   = 'flex';
+
+  const cls = classifyQuote(q);
+
+  // Ref + badges
+  document.getElementById('dRef').textContent = q.id;
+  const slaBadge = document.getElementById('dSLABadge');
+  if (cls === 'overdue') { slaBadge.style.display = ''; slaBadge.textContent = 'OVERDUE'; }
+  else if (cls === 'today') { slaBadge.style.display = ''; slaBadge.textContent = 'DUE TODAY'; slaBadge.style.background='var(--amber-dim)'; slaBadge.style.color='var(--amber)'; slaBadge.style.border='1px solid var(--amber-border)'; }
+  else slaBadge.style.display = 'none';
+
+  // Name
+  document.getElementById('dCustomer').textContent = q.cust;
+  document.getElementById('dCity').textContent     = q.city;
+  document.getElementById('dSector').textContent   = q.sector;
+
+  // KPIs
+  document.getElementById('dValue').textContent = formatINR(q.value);
+  document.getElementById('dValidity').textContent = formatDate(q.validity);
+
+  const nextEl = document.getElementById('dNextStep');
+  if (q.followup.nextDate) {
+    nextEl.textContent = formatDate(q.followup.nextDate) + ' · ' + (q.followup.nextChannel || '');
+    nextEl.className = 'kpi-value ' + (cls === 'overdue' ? 'red' : cls === 'today' ? 'amber' : '');
+  } else {
+    nextEl.textContent = 'Not Scheduled';
+    nextEl.className = 'kpi-value';
+    nextEl.style.color = 'var(--g400)';
+  }
+
+  document.getElementById('dOwner').textContent = q.owner;
+  document.getElementById('dFollowCount').textContent = q.logs.length;
+
+  const logsWithFlag = q.logs.filter(l => l.wasOnTime !== undefined);
+  const onTime = logsWithFlag.filter(l => l.wasOnTime).length;
+  const pct = logsWithFlag.length ? Math.round(onTime / logsWithFlag.length * 100) : null;
+  const onTimeEl = document.getElementById('dOnTime');
+  if (pct !== null) {
+    onTimeEl.textContent = pct + '%';
+    onTimeEl.className = 'kpi-value ' + (pct >= 70 ? 'green' : pct >= 40 ? 'amber' : 'red');
+  } else {
+    onTimeEl.textContent = '—';
+    onTimeEl.className = 'kpi-value';
+  }
+
+  // Contacts
+  const cb = document.getElementById('contactsBar');
+  cb.innerHTML = q.contacts.map(c => `
+    <div class="contact-chip">
+      <div>
+        <div class="contact-chip-name">${c.name}</div>
+        <div class="contact-chip-role">${c.role}</div>
+      </div>
+      <div class="contact-chip-actions">
+        <button class="contact-action-btn call" title="${c.phone}" onclick="callContact('${c.phone}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.65A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006.29 6.29l1.41-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </button>
+        <button class="contact-action-btn mail" title="${c.email}" onclick="mailContact('${c.email}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
+
+  // Timeline
+  renderTimeline(q);
+
+  // Set default date +2 days for no-activity quotes, or blank
+  if (q.logs.length === 0) {
+    document.getElementById('fNextDate').value = T(2);
+  }
+
+  // Update log count label
+  document.getElementById('logCount').textContent = q.logs.length ? q.logs.length + ' entr' + (q.logs.length===1?'y':'ies') : '';
+}
+
+function renderTimeline(q) {
+  const container = document.getElementById('timelineEntries');
+  if (!q.logs.length) {
+    container.innerHTML = `<div class="timeline-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <p>No activity logged yet.<br>Log the first follow-up on the right.</p>
+    </div>`;
+    return;
+  }
+
+  function channelIcon(ch) {
+    const c = (ch || '').toLowerCase();
+    if (c.includes('call'))    return { cls:'call',  svg:'<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.65A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006.29 6.29l1.41-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>' };
+    if (c.includes('email'))   return { cls:'email', svg:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>' };
+    if (c.includes('whatsapp'))return { cls:'email', svg:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>' };
+    if (c.includes('meet'))    return { cls:'meet',  svg:'<rect x="2" y="7" width="15" height="10" rx="2"/><polygon points="17 9 22 7 22 17 17 15"/>' };
+    if (c.includes('no ans'))  return { cls:'late',  svg:'<line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0119 12.55"/>' };
+    return { cls:'sys', svg:'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>' };
+  }
+
+  let html = '';
+  let lastDate = null;
+
+  q.logs.forEach((log, i) => {
+    const logDate = log.ts ? log.ts.slice(0,10) : null;
+    if (logDate && logDate !== lastDate) {
+      html += `<div class="timeline-date-sep"><span>${formatDate(logDate)}</span></div>`;
+      lastDate = logDate;
+    }
+
+    const ico = channelIcon(log.channel);
+    const isLate = log.wasOnTime === false;
+    const nextOverdue = log.nextDate && log.nextDate < T(0);
+
+    html += `<div class="timeline-entry">
+      <div class="timeline-icon ${isLate ? 'late' : ico.cls}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ico.svg}</svg>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-meta">
+          <span class="timeline-channel">${log.channel}</span>
+          ${isLate ? '<span class="timeline-late-badge">LATE</span>' : ''}
+          <span class="timeline-time">${formatDateTime(log.ts)}</span>
+        </div>
+        <div class="timeline-note">${escHtml(log.note)}</div>
+        ${log.nextDate ? `<div class="timeline-next ${nextOverdue ? 'late' : ''}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          Next: ${formatDate(log.nextDate)} via ${log.nextChannel || ''}
+        </div>` : ''}
+        <div class="timeline-who">${log.who}</div>
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════════════════════════════════
+   LOG ACTIVITY
+═══════════════════════════════════════════════════ */
+function updateChannelHint() {
+  const ch = document.getElementById('fChannel').value.toLowerCase();
+  const hints = {
+    call: 'What was discussed on the call? Any commitment from the customer?',
+    whatsapp: 'What was sent or discussed on WhatsApp?',
+    email: 'What was the content of the email?',
+    'site visit': 'What was assessed during the site visit? Who attended?',
+    'no answer': 'Describe attempts made. Will you try again?',
+    meeting: 'What was discussed in the meeting? Any decisions taken?'
+  };
+  const key = Object.keys(hints).find(k => ch.includes(k)) || 'call';
+  document.getElementById('channelHint').textContent = hints[key];
+}
+
+function logActivity() {
+  const q = MOCK_QUOTES.find(x => x.id === selectedId);
+  if (!q) { showToast('No quote selected', 'error'); return; }
+
+  const note = document.getElementById('fNote').value.trim();
+  if (!note) { showToast('Please enter what happened.', 'error'); return; }
+
+  const channel     = document.getElementById('fChannel').value;
+  const who         = document.getElementById('fWho').value;
+  const nextDate    = document.getElementById('fNextDate').value || null;
+  const nextChannel = document.getElementById('fNextChannel').value;
+  const nextTime    = document.getElementById('fNextTime').value || null;
+
+  // Compute wasOnTime
+  const prevNextDate = q.followup.nextDate;
+  const wasOnTime = prevNextDate ? (T(0) <= prevNextDate) : true;
+
+  const newLog = {
+    ts: new Date().toISOString(),
+    channel, who, note,
+    nextDate, nextChannel,
+    nextTime,
+    wasOnTime
+  };
+
+  // Prepend (most recent first)
+  q.logs.unshift(newLog);
+
+  // Update followup state
+  q.followup.nextDate    = nextDate;
+  q.followup.nextChannel = nextChannel;
+
+  // Clear form
+  document.getElementById('fNote').value = '';
+  document.getElementById('fNextDate').value = '';
+  document.getElementById('fNextTime').value = '';
+
+  // Re-render
+  updateScoreBar();
+  renderQueue();
+  renderDetail();
+
+  showToast('Activity logged successfully.');
+}
+
+/* ═══════════════════════════════════════════════════
+   WIN / LOST MODAL
+═══════════════════════════════════════════════════ */
+function openModal(mode) {
+  if (!selectedId) { showToast('Select a quote first.', 'error'); return; }
+  modalMode = mode;
+
+  const icon     = document.getElementById('modalIcon');
+  const title    = document.getElementById('modalTitle');
+  const subtitle = document.getElementById('modalSubtitle');
+  const confirm  = document.getElementById('modalConfirmBtn');
+  const poField  = document.getElementById('wonPoField');
+
+  if (mode === 'won') {
+    icon.className = 'modal-icon won';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    title.textContent = 'Mark as Won';
+    subtitle.textContent = 'Order will be initiated. This quote will move to Orders.';
+    confirm.textContent = 'Confirm Won';
+    confirm.className   = 'btn btn-green';
+    poField.style.display = '';
+  } else {
+    icon.className = 'modal-icon lost';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    title.textContent = 'Mark as Lost';
+    subtitle.textContent = 'This quote will be closed. Pipeline updated accordingly.';
+    confirm.textContent = 'Confirm Lost';
+    confirm.className   = 'btn btn-red-ghost';
+    poField.style.display = 'none';
+  }
+
+  document.getElementById('modalNote').value  = '';
+  document.getElementById('modalPoNo').value  = '';
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  modalMode = null;
+}
+
+function confirmOutcome() {
+  const q = MOCK_QUOTES.find(x => x.id === selectedId);
+  if (!q) return;
+
+  if (modalMode === 'won') {
+    const poNo = document.getElementById('modalPoNo').value.trim();
+    if (!poNo) { showToast('PO number is required to mark Won.', 'error'); return; }
+    q.followup.isCompleted = true;
+    q.status = 'Won';
+    showToast(`${q.id} marked as WON. Order flow initiated.`);
+  } else {
+    const note = document.getElementById('modalNote').value.trim();
+    q.followup.isCompleted = true;
+    q.status = 'Lost';
+    if (note) q.logs.unshift({ ts: new Date().toISOString(), channel:'System', who: currentUser, note: 'Marked Lost: ' + note, nextDate: null, wasOnTime: null });
+    showToast(`${q.id} marked as LOST.`);
+  }
+
+  closeModal();
+  selectedId = null;
+  document.getElementById('noSelection').style.display = '';
+  document.getElementById('detailView').style.display  = 'none';
+  updateScoreBar();
+  renderQueue();
+}
+
+function closeQuote() {
+  selectedId = null;
+  document.getElementById('noSelection').style.display = '';
+  document.getElementById('detailView').style.display  = 'none';
+  renderQueue();
+}
+
+/* ═══════════════════════════════════════════════════
+   CONTACT ACTIONS
+═══════════════════════════════════════════════════ */
+function callContact(phone) {
+  // In production: tel: link or click-to-call
+  showToast('Opening call: ' + phone);
+  window.open('tel:' + phone.replace(/\s/g,''));
+}
+function mailContact(email) {
+  showToast('Opening email: ' + email);
+  window.open('mailto:' + email);
+}
+
+/* ═══════════════════════════════════════════════════
+   PDF STUBS
+═══════════════════════════════════════════════════ */
+function generatePDF(type) {
+  showToast(type === 'quote' ? 'Generating Quote PDF…' : 'Generating Proforma Invoice PDF…');
+}
+
+/* ═══════════════════════════════════════════════════
+   VIEW SWITCHER
+═══════════════════════════════════════════════════ */
+function switchView(v, btn) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Board view: not implemented in this prototype
+  if (v === 'board') showToast('Board view opens in the full app.');
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════ */
+function showToast(msg, type='success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  const iconSvg = type === 'error'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+  toast.innerHTML = iconSvg + '<span>' + escHtml(msg) + '</span>';
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateY(4px)'; toast.style.transition='all 0.2s'; setTimeout(()=>toast.remove(),200); }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═══════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('modalBackdrop').classList.contains('open')) closeModal();
+    else closeQuote();
+  }
+  // Cmd/Ctrl+Enter to log
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && selectedId) {
+    logActivity();
+  }
+});
+
+// Close modal on backdrop click
+document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+function init() {
+  updateScoreBar();
+  renderQueue();
+  // Auto-select first overdue item
+  const firstOverdue = MOCK_QUOTES.find(q => !q.followup.isCompleted && classifyQuote(q) === 'overdue');
+  if (firstOverdue) selectQuote(firstOverdue.id);
+}
+
+init();
+</script>
+</body>
+</html>

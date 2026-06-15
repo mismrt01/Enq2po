@@ -1,0 +1,19 @@
+name = "manglaenq"
+main = "src/index.ts"
+compatibility_date = "2025-01-15"
+
+# Workers AI binding — exposes env.AI in the Worker
+[ai]
+binding = "AI"
+
+# CORS origin allowlist — comma-separated. Set via `wrangler secret put` or here.
+[vars]
+ALLOWED_ORIGINS = "http://localhost:5173,https://enq2po.pages.dev"
+# Which provider the Worker calls. One of: cloudflare | anthropic | gemini
+# Switch by editing this value and redeploying (`npm run deploy`).
+LLM_PROVIDER = "gemini"
+
+# Shared-secret header value is set via:
+#   wrangler secret put SHARED_SECRET=@jridgewell/sourcemap-codec
+# Do NOT put secrets in this file.
+
